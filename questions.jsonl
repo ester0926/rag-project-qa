@@ -1,0 +1,21 @@
+{"id": "taide-1", "q": "TAIDE 子 7 遇到什麼問題？怎麼解決？", "source": "docs/taide.md", "slides": [8], "answer": "啟動就 KeyError 缺 AWS 環境變數；補 dummy 後回 Raw image not found，發現 API 只收影像 ID、從 S3 讀圖；本地用 MinIO 模擬 S3 完成端到端測試，整理部署建議後上線"}
+{"id": "taide-2", "q": "子 3 的 image 在 x86 主機上發生什麼事？", "source": "docs/taide.md", "slides": [7], "answer": "image 是 arm64，主機是 x86_64，容器啟動後沒有 log 就退出；docker cp 取出程式，用 buildx --platform linux/amd64 重建"}
+{"id": "taide-3", "q": "牛隻行為辨識模型一開始交來的是什麼形式？後來怎麼變成可以部署的服務？", "source": "docs/taide.md", "slides": [9], "answer": "批次腳本，跑完就停、沒有常駐 HTTP endpoint；提供 FastAPI 範例後改成 POST /predict_video 的 API 版，並做 CPU 版 image"}
+{"id": "taide-4", "q": "子8 推論一支影片在 GPU 和 CPU 上各要多久？", "source": "docs/taide.md", "slides": [9, 10], "answer": "GPU 60 秒、CPU 8 核 743 秒、廠商 4 核主機 1740 秒；廠商把 timeout 調為 1 小時"}
+{"id": "taide-5", "q": "各子計畫規格書寫的 API 和實際驗證到的有哪些不一致？", "source": "docs/taide.md", "slides": [10], "answer": "6 個裡有 4 個路徑或參數格式不同，例如子8 規格寫 /demo/by-url、實作是 /predict_video；子9 data_window 規格是物件、實作是陣列"}
+{"id": "taide-6", "q": "跨團隊合作時對方一直不回信，你怎麼處理？", "source": "docs/taide.md", "slides": [6], "answer": "先 email 追蹤並設期限，沒回改用 Line 助理群聯繫，再不行就在總計畫會議後當面確認；子 7 就是 10/22 寄信沒回，10/30 再追蹤後隔天提供檔案"}
+{"id": "taide-7", "q": "農業 AI 計畫最後有幾個模型 API 上線？", "source": "docs/taide.md", "slides": [2, 12], "answer": "10 個模型完成本地驗證，7 個 API 上線並經負責人確認（團隊成果）"}
+{"id": "thesis-1", "q": "碩論為什麼從 listwise 改成 pointwise？", "source": "docs/thesis.md", "slides": [8], "answer": "listwise 分數只在同批 10 首內有意義，50 批拼起來排 500 首時尺度不一致；驗證 R@1 73.5% 但正式評估只有 0.19%；改成每首獨立評分＋BPR 損失"}
+{"id": "thesis-2", "q": "長期偏好向量是幾維？", "source": "docs/thesis.md", "slides": [2, 3, 4, 5], "answer": "256 維"}
+{"id": "thesis-3", "q": "加入長期偏好之後，第一名命中率提升多少？", "source": "docs/thesis.md", "slides": [2, 11], "answer": "R@1 從 19.07% 提升到 30.65%，增加 11.58 個百分點"}
+{"id": "thesis-4", "q": "用 LLM 生成訓練資料品質不穩定，你怎麼確保資料可靠？", "source": "docs/thesis.md", "slides": [7], "answer": "驗證迴圈：分層 Prompt＋CoT 先輸出 [PLAN]、外部驗證器檢查格式與輪數、SBERT 檢查人設一致性；失敗就把錯誤轉成提示、溫度 0.7 降到 0.4 重試最多 3 次；再抽 3,000 筆用 Gemma 3 12B 評審，平均 4.665 分"}
+{"id": "thesis-5", "q": "為什麼偏好和文字對排序的貢獻剛好是 0？後來怎麼修？", "source": "docs/thesis.md", "slides": [10], "answer": "排序頭讀的是序列第 2 個位置的 [MUSIC]，LLaMA 因果遮罩讓它看不到後面的偏好和文字；新增 [RANK] token 放在序列最後讓排序頭讀它"}
+{"id": "emotion-1", "q": "學習情緒辨識的準確率是多少？用了什麼方法？", "source": "docs/emotion.md", "slides": [7], "answer": "遷移學習：以 Dense_FaceLiveNet 為骨幹，凍結前段特徵層，用 1,546 張課堂影像微調分類層；5 折平均準確率 93.14%、Macro-F1 0.93"}
+{"id": "emotion-2", "q": "為什麼 92.7% 的準確率其實沒有意義？", "source": "docs/emotion.md", "slides": [12], "answer": "316 筆中高成效佔 92.7%，模型等於全部猜高成效，低成效召回率是 0；改用類別權重、在訓練集找最佳閾值、AUC<0.5 時自動翻轉，並同時報告多個指標"}
+{"id": "emotion-3", "q": "情緒序列是怎麼切段的？跟固定切割有什麼不同？", "source": "docs/emotion.md", "slides": [8], "answer": "用 ruptures 的 Dynp 動態規劃變動點偵測（RBF kernel）找情緒轉換點，切點跟著情緒走；固定切割是每 3 秒（90 幀）切一段取眾數，短暫情緒會被蓋掉"}
+{"id": "emotion-4", "q": "困惑這個情緒在參與度裡怎麼處理？", "source": "docs/emotion.md", "slides": [9], "answer": "動態困惑分配：看困惑的下一個情緒，接喜悅、投入、驚訝視為高參與，接挫折或無聊視為低參與，其他維持中等"}
+{"id": "aicup-1", "q": "AI CUP 最後的排名是多少？", "source": "docs/aicup.md", "slides": [1, 2, 10], "answer": "Private Leaderboard 137 / 934，Top 15%"}
+{"id": "aicup-2", "q": "光照感測器讀值會卡住的問題怎麼處理？", "source": "docs/aicup.md", "slides": [3, 6], "answer": "感測器上限 117,758.2 lux 會飽和；以早上 9 點為 100% 基準依時段給比例，下午 2 點最強 200%，夜間 0.001，非整點線性插值"}
+{"id": "aicup-3", "q": "要往後預測時沒有未來的天氣資料，怎麼辦？", "source": "docs/aicup.md", "slides": [8], "answer": "整合中央氣象署 C0Z100 東華站即時觀測（溫度、濕度、日照），日照從 MJ/m² 換算成 Lux；每預測一步就和觀測合成新的一筆，滑動視窗自迴歸預測到 48 步"}
+{"id": "aicup-4", "q": "先預測天氣再預測發電量的做法效果如何？", "source": "docs/aicup.md", "slides": [9], "answer": "Weather / Power 分離實驗誤差反而增加約 36%，所以回退到單一模型"}
+{"id": "neg-1", "q": "這些專案的總預算是多少？", "source": null, "slides": [], "answer": "資料中沒有提到（不計入命中率，用來測試會不會亂答）"}

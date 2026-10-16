@@ -1,0 +1,10 @@
+# 2026-10 實測可用版本（Python 3.12，Windows）
+langchain-core==1.6.10
+langchain-text-splitters==1.1.3
+langchain-ollama==1.1.0
+langchain-chroma==1.1.0
+chromadb==1.5.9
+streamlit==1.66.0
+opencc-python-reimplemented==0.1.7
+# 準備文件用（pptx → markdown）
+markitdown[pptx]==0.1.8

@@ -1,0 +1,15 @@
+# Python / 環境
+.venv/
+__pycache__/
+*.pyc
+
+# 向量索引（由 ingest.py 產生，可重建）
+db_*/
+
+# 知識庫文件：個人專案簡報內容，不公開（準備方式見 docs/README.md）
+docs/*
+!docs/README.md
+
+# 個人筆記
+RAG_Demo_實作指南.md
+RAG_實作紀錄_面試素材.md
